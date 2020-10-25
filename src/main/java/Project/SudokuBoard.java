@@ -12,18 +12,20 @@ public class SudokuBoard {
         board[col][row] = val;
     }
 
-    private boolean checkAvailability(int col, int row, int val) {
+    private boolean checkIfValid(int col, int row) {
+
+        int curVal = getBoard(col, row);
 
         // column check
-        for (int i = 0; i < 9; i++) {
-            if (getBoard(col, i) == val) {
+        for (int i = 0; i < col; i++) {
+            if (getBoard(i, row) == curVal) {
                 return false;
             }
         }
 
         // row check
-        for (int i = 0; i < 9; i++) {
-            if (getBoard(i, row) == val) {
+        for (int i = 0; i < row; i++) {
+            if (getBoard(col, i) == curVal) {
                 return false;
             }
         }
@@ -33,8 +35,8 @@ public class SudokuBoard {
         int y = row - (row % 3);
 
         for (int i = x; i < x + 3; i++) {
-            for (int j = y ; j < y + 3; j++) {
-                if (getBoard(i, j) == val) {
+            for (int j = y; j < y + 3; j++) {
+                if (getBoard(i, j) == curVal && !(i == col && j == row)) {
                     return false;
                 }
             }
@@ -45,5 +47,42 @@ public class SudokuBoard {
 
     public void fillBoard() {
 
+        int[] firstVal = new int[81];
+
+        int index = 0;
+        while (index < 81) {
+
+            int col = index % 9;
+            int row = index / 9;
+
+            boolean leave = false;
+            do {
+                // jeśli komórka na którą patrzymy równa się zero
+                // to znaczy, że nie było wartości początkowe (lub została wyzerowana)
+                if (firstVal[index] == 0) {
+                    firstVal[index] = (int) (Math.random() * 9 + 1);
+                    setBoard(col, row, firstVal[index]);
+                } else {
+                    // ustawiamy liczbę o jedną większą od poprzedniej próbowanej
+                    setBoard(col, row, (getBoard(col, row) % 9 + 1));
+
+                    // jeśli obecnie wybrana wartość równa się pierwszej wylowanej wartości
+                    // to sprawdziliśmy wszystkie liczby i żadnej nie można wstawić
+                    if (getBoard(col, row) == firstVal[index]) {
+                        firstVal[index] = 0;
+                        index--;
+                        break;
+                    }
+                }
+
+                // sprawdzamy czy wstawiona liczba jest wstaiona według zasad sudoku
+                if (checkIfValid(col, row)) {
+                    // jeśli tak wychodzimy z wewnętrznej pętli i patrzymy na kolejną komórkę
+                    index++;
+                    leave = true;
+                }
+            } while (!leave);
+        }
     }
+
 }
