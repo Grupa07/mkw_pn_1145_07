@@ -10,7 +10,13 @@ public class SudokuBoardTest {
         SudokuBoard sudokuBoard = new SudokuBoard();
         sudokuBoard.fillBoard();
 
-        int testVal = sudokuBoard.getBoard(0, 0);
+        int col = (int) (Math.random() * 9);
+        int row = (int) (Math.random() * 9);
+
+        int x = col - (col % 3); // coordinates of left top cell of the segment
+        int y = row - (row % 3);
+
+        int testVal = sudokuBoard.getBoard(col, row);
 
         // check if there are empty cells (0 represents empty cell)
         for (int i = 0; i < 3; i++) {
@@ -20,22 +26,47 @@ public class SudokuBoardTest {
         }
 
         // check if values are repeated in the same column
-        for (int i = 1; i < 9; i++) {
-            Assertions.assertNotEquals(sudokuBoard.getBoard(i, 0), testVal);
+        for (int i = 0; i < 9; i++) {
+            if (i != row) Assertions.assertNotEquals(sudokuBoard.getBoard(col, i), testVal);
+            else Assertions.assertEquals(sudokuBoard.getBoard(col, i), testVal);
         }
 
         // check if values are repeated in the same row
-        for (int i = 1; i < 9; i++) {
-            Assertions.assertNotEquals(sudokuBoard.getBoard(0, i), testVal);
+        for (int i = 0; i < 9; i++) {
+            if (i != col) Assertions.assertNotEquals(sudokuBoard.getBoard(i, row), testVal);
+            else Assertions.assertEquals(sudokuBoard.getBoard(i, row), testVal);
         }
 
-        // check if values are repeated in the segment
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (i != 0 && j != 0) {
+        // Check if values are repeated in the segment
+        for (int i = x; i < x + 3; i++) {
+            for (int j = y; j < y + 3; j++) {
+                if (i != col && j != row) {
                     Assertions.assertNotEquals(sudokuBoard.getBoard(i, j), testVal);
+                } else if (i == col && j == row) {
+                    Assertions.assertEquals(sudokuBoard.getBoard(i, j), testVal);
                 }
             }
         }
+    }
+
+    @Test
+    void CheckIfAlwaysDifferent() {
+        SudokuBoard sudokuBoard1 = new SudokuBoard();
+        SudokuBoard sudokuBoard2 = new SudokuBoard();
+
+        sudokuBoard1.fillBoard();
+        sudokuBoard2.fillBoard();
+
+        boolean different = false;
+
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (sudokuBoard1.getBoard(i, j) != sudokuBoard2.getBoard(i, j)) {
+                    different = true;
+                }
+            }
+        }
+
+        Assertions.assertEquals(different, true);
     }
 }
