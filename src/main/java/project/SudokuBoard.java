@@ -1,4 +1,4 @@
-package Project;
+package project;
 
 public class SudokuBoard {
 
@@ -52,8 +52,8 @@ public class SudokuBoard {
         int index = 0;
         while (index < 81) {
 
-            int col = index % 9;
-            int row = index / 9;
+            int col = index / 9;
+            int row = index % 9;
 
             boolean leave = false;
             do {
@@ -70,6 +70,7 @@ public class SudokuBoard {
                     // to sprawdziliśmy wszystkie liczby i żadnej nie można wstawić
                     if (getBoard(col, row) == firstVal[index]) {
                         firstVal[index] = 0;
+                        setBoard(col, row, 0);
                         index--;
                         break;
                     }
