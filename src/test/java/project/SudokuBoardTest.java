@@ -67,7 +67,7 @@ public class SudokuBoardTest {
         for (int i = 0; i < 81; i++) {
             int col = i / 9;
             int row = i % 9;
-            if (sudokuBoard1.getBoard(i, i) != sudokuBoard2.getBoard(i, i)) {
+            if (sudokuBoard1.getBoard(col, row) != sudokuBoard2.getBoard(col, row)) {
                 different = true;
                 break;
             }
