@@ -2,7 +2,7 @@ package project;
 
 public class SudokuBoard {
 
-    private int[][] board = new int[9][9];
+    private final int[][] board = new int[9][9];
 
     public int getBoard(int col, int row) {
         return board[col][row];
@@ -52,8 +52,8 @@ public class SudokuBoard {
         int index = 0;
         while (index < 81) {
 
-            int col = index / 9;
-            int row = index % 9;
+            int col = index % 9;
+            int row = index / 9;
 
             boolean leave = false;
             do {

@@ -34,13 +34,14 @@ public class SudokuBoardTest {
             }
         }
 
-        // Check if values are repeated in the segment
-
+        // check if values are repeated in the segment
         for (int k = 0; k < 81; k++) {
-            int col=k/9;
-            int row=k%9;
-            int x=col-(col%3);
-            int y=row-(row%3);
+            int col = k / 9;
+            int row = k % 9;
+
+            int x = col - (col % 3);
+            int y = row - (row % 3);
+
             for (int i = x; i < x + 3; i++) {
                 for (int j = y; j < y + 3; j++) {
                     if (i != col && j != row) {
@@ -64,13 +65,12 @@ public class SudokuBoardTest {
         boolean different = false;
 
         for (int i = 0; i < 81; i++) {
-            int col=i/9;
-            int row=i%9;
+            int col = i / 9;
+            int row = i % 9;
             if (sudokuBoard1.getBoard(i, i) != sudokuBoard2.getBoard(i, i)) {
                 different = true;
                 break;
             }
-
         }
 
         Assertions.assertTrue(different);
