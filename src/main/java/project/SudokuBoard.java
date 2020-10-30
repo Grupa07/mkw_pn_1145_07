@@ -12,6 +12,7 @@ public class SudokuBoard {
         board[x][y] = val;
     }
 
+
     private boolean columnCheck(int x, int y, int val) {
         for (int i = 0; i < x; i++) {
             if (getBoard(i, y) == val) {
@@ -44,34 +45,14 @@ public class SudokuBoard {
         return true;
     }
 
-    private boolean checkIfValid(int x, int y, int val) {
+    public boolean checkIfValid(int x, int y, int val) {
         return (columnCheck(x, y, val) && rowCheck(x, y, val) && segmentCheck(x, y, val));
     }
 
-    private boolean fillCells(int x, int y) {
-        if (x == 9) {
-            if (y == 8) {
-                return true;
-            }
-            x = 0;
-            y++;
-        }
 
-        int val = (int) (Math.random() * 9 + 1);
-        for (int i = 0; i < 9; i++) {
-            if (checkIfValid(x, y, val)) {
-                setBoard(x, y, val);
-                if (fillCells(x + 1, y)) {
-                    return true;
-                }
-            }
-            val = (val % 9) + 1;
-        }
-        setBoard(x, y, 0);
-        return false;
-    }
 
     public void fillBoard() {
-        fillCells(0, 0);
+        BacktrackingSudokuSolver s = new BacktrackingSudokuSolver();
+        s.solve(this,0,0);
     }
 }
