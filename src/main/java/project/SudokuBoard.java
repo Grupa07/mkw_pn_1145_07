@@ -4,86 +4,74 @@ public class SudokuBoard {
 
     private final int[][] board = new int[9][9];
 
-    public int getBoard(int col, int row) {
-        return board[col][row];
+    public int getBoard(int x, int y) {
+        return board[x][y];
     }
 
-    public void setBoard(int col, int row, int val) {
-        board[col][row] = val;
+    public void setBoard(int x, int y, int val) {
+        board[x][y] = val;
     }
 
-    private boolean checkIfValid(int col, int row) {
-
-        int curVal = getBoard(col, row);
-
-        // column check
-        for (int i = 0; i < col; i++) {
-            if (getBoard(i, row) == curVal) {
+    private boolean columnCheck(int x, int y, int val) {
+        for (int i = 0; i < x; i++) {
+            if (getBoard(i, y) == val) {
                 return false;
             }
         }
+        return true;
+    }
 
-        // row check
-        for (int i = 0; i < row; i++) {
-            if (getBoard(col, i) == curVal) {
+    private boolean rowCheck(int x, int y, int val) {
+        for (int i = 0; i < y; i++) {
+            if (getBoard(x, i) == val) {
                 return false;
             }
         }
+        return true;
+    }
 
-        // segment check
-        int x = col - (col % 3); // coordinates of left top cell of the segment
-        int y = row - (row % 3);
+    private boolean segmentCheck(int x, int y, int val) {
+        int segX = x - (x % 3);
+        int segY = y - (y % 3);
 
-        for (int i = x; i < x + 3; i++) {
-            for (int j = y; j < y + 3; j++) {
-                if (getBoard(i, j) == curVal && !(i == col && j == row)) {
+        for (int i = segX; i < segX + 3; i++) {
+            for (int j = segY; j < segY + 3; j++) {
+                if (getBoard(i, j) == val && !(i == x && j == y)) {
                     return false;
                 }
             }
         }
-
         return true;
     }
 
-    public void fillBoard() {
-
-        int[] firstVal = new int[81];
-
-        int index = 0;
-        while (index < 81) {
-
-            int col = index % 9;
-            int row = index / 9;
-
-            boolean leave = false;
-            do {
-                // jeśli komórka na którą patrzymy równa się zero
-                // to znaczy, że nie było wartości początkowe (lub została wyzerowana)
-                if (firstVal[index] == 0) {
-                    firstVal[index] = (int) (Math.random() * 9 + 1);
-                    setBoard(col, row, firstVal[index]);
-                } else {
-                    // ustawiamy liczbę o jedną większą od poprzedniej próbowanej
-                    setBoard(col, row, (getBoard(col, row) % 9 + 1));
-
-                    // jeśli obecnie wybrana wartość równa się pierwszej wylowanej wartości
-                    // to sprawdziliśmy wszystkie liczby i żadnej nie można wstawić
-                    if (getBoard(col, row) == firstVal[index]) {
-                        firstVal[index] = 0;
-                        setBoard(col, row, 0);
-                        index--;
-                        break;
-                    }
-                }
-
-                // sprawdzamy czy wstawiona liczba jest wstaiona według zasad sudoku
-                if (checkIfValid(col, row)) {
-                    // jeśli tak wychodzimy z wewnętrznej pętli i patrzymy na kolejną komórkę
-                    index++;
-                    leave = true;
-                }
-            } while (!leave);
-        }
+    private boolean checkIfValid(int x, int y, int val) {
+        return (columnCheck(x, y, val) && rowCheck(x, y, val) && segmentCheck(x, y, val));
     }
 
+    private boolean fillCells(int x, int y) {
+        if (x == 9) {
+            if (y == 8) {
+                return true;
+            }
+            x = 0;
+            y++;
+        }
+
+        int val = (int) (Math.random() * 9 + 1);
+        for (int i = 0; i < 9; i++) {
+            if (checkIfValid(x, y, val)) {
+                setBoard(x, y, val);
+                if (fillCells(x + 1, y)) {
+                    return true;
+                }
+            }
+            val = (val % 9) + 1;
+        }
+        setBoard(x, y, 0);
+        return false;
+    }
+
+    public void fillBoard() {
+        fillCells(0, 0);
+    }
 }

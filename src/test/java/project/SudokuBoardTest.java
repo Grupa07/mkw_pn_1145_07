@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 public class SudokuBoardTest {
 
     @Test
-    public void fillBorderTest() {
+    void fillBorderTest() {
         SudokuBoard sudokuBoard = new SudokuBoard();
         sudokuBoard.fillBoard();
 
