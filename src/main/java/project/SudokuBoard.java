@@ -3,6 +3,11 @@ package project;
 public class SudokuBoard {
 
     private final int[][] board = new int[9][9];
+    private final SudokuSolver solver;
+
+    SudokuBoard() {
+        solver = new BacktrackingSudokuSolver();
+    }
 
     public int getBoard(int x, int y) {
         return board[x][y];
@@ -11,7 +16,6 @@ public class SudokuBoard {
     public void setBoard(int x, int y, int val) {
         board[x][y] = val;
     }
-
 
     private boolean columnCheck(int x, int y, int val) {
         for (int i = 0; i < x; i++) {
@@ -49,10 +53,7 @@ public class SudokuBoard {
         return (columnCheck(x, y, val) && rowCheck(x, y, val) && segmentCheck(x, y, val));
     }
 
-
-
-    public void fillBoard() {
-        BacktrackingSudokuSolver s = new BacktrackingSudokuSolver();
-        s.solve(this,0,0);
+    public void solveGame() {
+        solver.solve(this);
     }
 }

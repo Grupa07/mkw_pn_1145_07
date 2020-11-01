@@ -1,10 +1,10 @@
 package project;
 
 public class BacktrackingSudokuSolver implements SudokuSolver {
-    @Override
 
-    public boolean solve(SudokuBoard board, int x, int y) {
+    private SudokuBoard board;
 
+    private boolean fillBoard(int x, int y) {
         if (x == 9) {
             if (y == 8) {
                 return true;
@@ -17,7 +17,7 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
         for (int i = 0; i < 9; i++) {
             if (board.checkIfValid(x, y, val)) {
                 board.setBoard(x, y, val);
-                if (solve(board, x + 1, y)) {
+                if (fillBoard(x + 1, y)) {
                     return true;
                 }
             }
@@ -27,8 +27,9 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
         return false;
     }
 
-
-
-
+    @Override
+    public void solve(SudokuBoard board) {
+        this.board = board;
+        fillBoard(0, 0);
+    }
 }
-   

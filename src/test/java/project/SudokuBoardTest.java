@@ -8,7 +8,7 @@ public class SudokuBoardTest {
     @Test
     void fillBorderTest() {
         SudokuBoard sudokuBoard = new SudokuBoard();
-        sudokuBoard.fillBoard();
+        sudokuBoard.solveGame();
 
         // check if there are empty cells (0 represents empty cell)
         for (int i = 0; i < 9; i++) {
@@ -59,8 +59,8 @@ public class SudokuBoardTest {
         SudokuBoard sudokuBoard1 = new SudokuBoard();
         SudokuBoard sudokuBoard2 = new SudokuBoard();
 
-        sudokuBoard1.fillBoard();
-        sudokuBoard2.fillBoard();
+        sudokuBoard1.solveGame();
+        sudokuBoard2.solveGame();
 
         boolean different = false;
 
