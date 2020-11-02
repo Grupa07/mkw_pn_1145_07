@@ -5,8 +5,8 @@ public class SudokuBoard {
     private final int[][] board = new int[9][9];
     private final SudokuSolver solver;
 
-    SudokuBoard() {
-        solver = new BacktrackingSudokuSolver();
+    SudokuBoard(SudokuSolver solver) {
+        this.solver = solver;
     }
 
     public int getBoard(int x, int y) {

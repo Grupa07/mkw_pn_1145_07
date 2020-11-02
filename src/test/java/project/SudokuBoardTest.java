@@ -3,7 +3,7 @@ package project;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class BackTrackingSudokuSolverTest {
+public class SudokuBoardTest {
 
     // check if there are empty cells (0 represents empty cell)
     private boolean emptyCheck(SudokuBoard board) {
@@ -69,7 +69,7 @@ public class BackTrackingSudokuSolverTest {
 
     @Test
     void solveTest() {
-        SudokuBoard board = new SudokuBoard();
+        SudokuBoard board = new SudokuBoard(new BacktrackingSudokuSolver());
         board.solveGame();
 
         // check if there are empty cells (0 represents empty cell)
@@ -87,8 +87,8 @@ public class BackTrackingSudokuSolverTest {
 
     @Test
     void CheckIfAlwaysDifferent() {
-        SudokuBoard board1 = new SudokuBoard();
-        SudokuBoard board2 = new SudokuBoard();
+        SudokuBoard board1 = new SudokuBoard(new BacktrackingSudokuSolver());
+        SudokuBoard board2 = new SudokuBoard(new BacktrackingSudokuSolver());
 
         board1.solveGame();
         board2.solveGame();
