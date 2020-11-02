@@ -41,7 +41,7 @@ public class SudokuBoard {
 
         for (int i = segX; i < segX + 3; i++) {
             for (int j = segY; j < segY + 3; j++) {
-                if (getBoard(i, j) == val && !(i == x && j == y)) {
+                if (getBoard(i, j) == val) {
                     return false;
                 }
             }
