@@ -2,7 +2,7 @@ package project;
 
 public class SudokuBoard {
 
-    private final int[][] board = new int[9][9];
+    private final SudokuField[][] board = new SudokuField[9][9];
     private final SudokuSolver solver;
 
     SudokuBoard(SudokuSolver solver) {
@@ -10,11 +10,15 @@ public class SudokuBoard {
     }
 
     public int getBoard(int x, int y) {
-        return board[x][y];
+        return board[x][y].getFieldValue();
     }
 
     public void setBoard(int x, int y, int val) {
-        board[x][y] = val;
+        board[x][y].setFieldValue(val);
+    }
+
+    boolean checkBoard() {
+        return true;
     }
 
     private boolean columnCheck(int x, int y, int val) {
